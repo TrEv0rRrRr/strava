@@ -15,8 +15,6 @@ public class CreateAssessmentCommandFromResourceAssembler {
    */
   public static CreateAssessmentCommand toCommandFromResource(CreateAssessmentResource resource) {
     return new CreateAssessmentCommand(
-        resource.athleteId(),
-        resource.coachId(),
         resource.bmi(),
         resource.pushUps(),
         resource.plankTime(),
