@@ -44,13 +44,14 @@ public class AssessmentController {
    *         bad
    *         request response if the assessment could not be created.
    */
-  @PostMapping
+  @PostMapping("/{coachId}/athletes/{athleteId}/assessments")
   @Operation(summary = "Creates a new assessment")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = ""),
       @ApiResponse(responseCode = "400", description = "")
   })
-  public ResponseEntity<AssessmentResource> createAssessment(@Valid @RequestBody CreateAssessmentResource resource) {
+  public ResponseEntity<AssessmentResource> createAssessment(@PathVariable Long coachId,
+      @PathVariable Long athleteId, @Valid @RequestBody CreateAssessmentResource resource) {
     var createAssessmentCommand = CreateAssessmentCommandFromResourceAssembler.toCommandFromResource(resource);
 
     var assessment = commandService.handle(createAssessmentCommand);
