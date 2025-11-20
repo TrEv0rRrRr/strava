@@ -9,8 +9,10 @@ import jakarta.validation.constraints.*;
  * @author Valentino Solis
  */
 @Embeddable
-public record CardioMetrics(@NotNull @Min(80) @Max(220) Integer maxHeartRate,
-    @NotNull @Min(30) @Max(120) Integer restingHeartRate, @NotNull @Min(20) @Max(80) Integer vo2max) {
+public record CardioMetrics(
+    @NotNull(message = "The max heart rate is required.") @Min(80) @Max(220) Integer maxHeartRate,
+    @NotNull(message = "The resting heart rate is required.") @Min(30) @Max(120) Integer restingHeartRate,
+    @NotNull(message = "The vo2max is required.") @Min(20) @Max(80) Integer vo2max) {
 
   public CardioMetrics {
     if (restingHeartRate > maxHeartRate)

@@ -9,5 +9,5 @@ import jakarta.validation.constraints.*;
  * @author Valentino Solis
  */
 @Embeddable
-public record PlankTime(@NotNull @Min(0) @Max(600) Integer value) {
+public record PlankTime(@NotNull(message = "The plank time is required.") @Min(0) @Max(600) Integer value) {
 }

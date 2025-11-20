@@ -9,5 +9,6 @@ import jakarta.validation.constraints.*;
  * @author Valentino Solis
  */
 @Embeddable
-public record ConfidentialNote(@NotNull @NotBlank @Size(min = 15, max = 500) String encryptedText) {
+public record ConfidentialNote(
+    @NotBlank(message = "The confidential note cannot be empty.") @Size(min = 15, max = 500, message = "The confidential note must be between 15 and 500 characters.") String encryptedText) {
 }

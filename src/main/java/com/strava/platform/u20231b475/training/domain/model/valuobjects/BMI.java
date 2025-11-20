@@ -13,5 +13,5 @@ import jakarta.validation.constraints.NotNull;
  * @author Valentino Solis
  */
 @Embeddable
-public record BMI(@NotNull @DecimalMin("10.0") @DecimalMax("40.0") BigDecimal value) {
+public record BMI(@NotNull(message = "The BMI is required.") @DecimalMin("10.0") @DecimalMax("40.0") BigDecimal value) {
 }

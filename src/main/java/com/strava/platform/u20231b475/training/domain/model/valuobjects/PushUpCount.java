@@ -9,5 +9,5 @@ import jakarta.validation.constraints.*;
  * @author Valentino Solis
  */
 @Embeddable
-public record PushUpCount(@NotNull @Min(0) @Max(200) Integer value) {
+public record PushUpCount(@NotNull(message = "The push up count is required.") @Min(0) @Max(200) Integer value) {
 }
