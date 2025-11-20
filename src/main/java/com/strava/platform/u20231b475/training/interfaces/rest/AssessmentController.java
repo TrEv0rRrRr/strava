@@ -47,12 +47,13 @@ public class AssessmentController {
   @PostMapping("/{coachId}/athletes/{athleteId}/assessments")
   @Operation(summary = "Creates a new assessment")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = ""),
-      @ApiResponse(responseCode = "400", description = "")
+      @ApiResponse(responseCode = "201", description = "Assessment Created"),
+      @ApiResponse(responseCode = "400", description = "Bad Request")
   })
-  public ResponseEntity<AssessmentResource> createAssessment(@PathVariable Long coachId,
-      @PathVariable Long athleteId, @Valid @RequestBody CreateAssessmentResource resource) {
-    var createAssessmentCommand = CreateAssessmentCommandFromResourceAssembler.toCommandFromResource(resource);
+  public ResponseEntity<AssessmentResource> createAssessment(@PathVariable Long athleteId, @PathVariable Long coachId,
+      @Valid @RequestBody CreateAssessmentResource resource) {
+    var createAssessmentCommand = CreateAssessmentCommandFromResourceAssembler.toCommandFromResource(athleteId, coachId,
+        resource);
 
     var assessment = commandService.handle(createAssessmentCommand);
 
