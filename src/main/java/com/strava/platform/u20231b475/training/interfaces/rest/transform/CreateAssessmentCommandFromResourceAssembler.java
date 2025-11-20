@@ -13,8 +13,11 @@ public class CreateAssessmentCommandFromResourceAssembler {
    * @param resource The {@link CreateAssessmentResource} resource to convert
    * @return The {@link CreateAssessmentCommand} command
    */
-  public static CreateAssessmentCommand toCommandFromResource(CreateAssessmentResource resource) {
+  public static CreateAssessmentCommand toCommandFromResource(Long athleteId, Long coachId,
+      CreateAssessmentResource resource) {
     return new CreateAssessmentCommand(
+        athleteId,
+        coachId,
         resource.bmi(),
         resource.pushUps(),
         resource.plankTime(),
