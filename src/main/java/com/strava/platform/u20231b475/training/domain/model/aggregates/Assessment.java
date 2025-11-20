@@ -21,6 +21,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 /**
  * Assessment Aggregate root
  * 
@@ -28,6 +30,8 @@ import lombok.Getter;
  */
 @Entity
 public class Assessment extends AuditableAbstractAggregateRoot<Assessment> {
+  @Getter
+  private LocalDate date;
   @Embedded
   @Getter
   @AttributeOverride(name = "id", column = @Column(name = "athlete_id"))
@@ -90,6 +94,7 @@ public class Assessment extends AuditableAbstractAggregateRoot<Assessment> {
     this.confidentialNote = new ConfidentialNote(command.encryptedText());
     this.type = command.type();
     this.status = AssessmentStatus.RECORDED;
+    this.date = LocalDate.now();
 
     validateTypeRules();
   }
