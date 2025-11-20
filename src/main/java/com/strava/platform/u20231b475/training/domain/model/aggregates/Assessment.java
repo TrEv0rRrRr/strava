@@ -72,11 +72,45 @@ public class Assessment extends AuditableAbstractAggregateRoot<Assessment> {
     this.athleteId = new AthleteId(command.athleteId());
     this.coachId = new CoachId(command.coachId());
     this.bmi = new BMI(command.bmi());
-    this.pushUps = new PushUpCount(command.pushUps());
-    this.plankTime = new PlankTime(command.plankTime());
-    this.cardioMetrics = new CardioMetrics(command.maxHeartRate(), command.restingHeartRate(), command.vo2max());
+    this.pushUps = command.pushUps() != null ? new PushUpCount(command.pushUps()) : null;
+    this.plankTime = command.plankTime() != null ? new PlankTime(command.plankTime()) : null;
+    this.cardioMetrics = command.maxHeartRate() != null
+        ? new CardioMetrics(command.maxHeartRate(), command.restingHeartRate(), command.vo2max())
+        : null;
     this.confidentialNote = new ConfidentialNote(command.encryptedText());
     this.type = command.type();
     this.status = AssessmentStatus.RECORDED;
+
+    validateTypeRules();
+  }
+
+  private void validateTypeRules() {
+    switch (this.type) {
+
+      case STRENGTH -> {
+        if (this.pushUps == null || this.plankTime == null) {
+          throw new IllegalArgumentException("For STRENGTH assessments, pushUps and plankTime are required.");
+        }
+      }
+
+      case CARDIO -> {
+        if (this.cardioMetrics == null) {
+          throw new IllegalArgumentException("For CARDIO assessments, cardioMetrics must be provided.");
+        }
+      }
+
+      case RECOVERY -> {
+        if (this.cardioMetrics != null) {
+          var r = this.cardioMetrics.restingHeartRate();
+          if (r < 50 || r > 90) {
+            // no es obligatorio, pero se recomienda: tú decides si lanzar excepción
+            // o solo loguear/emitir un dominio event
+            System.out.println("Warning: restingHeartRate is outside the recommended range for RECOVERY.");
+          }
+        }
+      }
+
+      default -> throw new IllegalArgumentException("Unknown assessment type: " + this.type);
+    }
   }
 }
